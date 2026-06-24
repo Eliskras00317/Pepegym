@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PEPE GYM – Fitness Center Suharekë</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Inter:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080808;
+    --surface: #101010;
+    --card: #141414;
+    --border: #1e1e1e;
+    --border-light: #2a2a2a;
+    --gold: #c9962a;
+    --gold-light: #e8b84b;
+    --gold-pale: rgba(201,150,42,0.12);
+    --white: #f0ede8;
+    --off: #b8b4ae;
+    --muted: #666;
+    --grad: linear-gradient(120deg, #c9962a 0%, #e8b84b 50%, #c9962a 100%);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 56px;
+    height: 68px;
+    background: rgba(8,8,8,0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 6px;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: color 0.25s;
+  }
+
+  .nav-links a:hover { color: var(--gold-light); }
+
+  .nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--bg) !important;
+    background: var(--grad);
+    padding: 9px 22px;
+    border-radius: 100px;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    letter-spacing: 1.5px !important;
+    text-transform: uppercase;
+    -webkit-text-fill-color: var(--bg) !important;
+    transition: opacity 0.2s, transform 0.2s !important;
+    white-space: nowrap;
+  }
+
+  .nav-btn:hover { opacity: 0.85 !important; transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 56px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-ambient {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 55% 55% at 75% 40%, rgba(201,150,42,0.07) 0%, transparent 65%),
+      radial-gradient(ellipse 35% 45% at 15% 70%, rgba(201,150,42,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* large decorative text */
+  .hero-deco {
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(160px, 22vw, 300px);
+    letter-spacing: -4px;
+    line-height: 0.85;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(201,150,42,0.07);
+    user-select: none;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 720px;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 28px;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.6;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(56px, 8vw, 110px);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: -1px;
+    margin-bottom: 28px;
+    color: var(--white);
+  }
+
+  .hero-title em {
+    font-style: italic;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--off);
+    font-weight: 300;
+    max-width: 500px;
+    margin-bottom: 44px;
+    line-height: 1.75;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .btn-gold {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--grad);
+    color: #0a0802;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+
+  .btn-gold:hover {
+    opacity: 0.88;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(201,150,42,0.25);
+  }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--off);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border-light);
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .btn-ghost:hover { color: var(--gold-light); border-color: var(--gold); }
+
+  .btn-ghost svg { transition: transform 0.2s; }
+  .btn-ghost:hover svg { transform: translateX(4px); }
+
+  /* hero stats */
+  .hero-stats {
+    display: flex;
+    gap: 0;
+    margin-top: 72px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .stat {
+    flex: 1;
+    padding-right: 40px;
+    border-right: 1px solid var(--border);
+    margin-right: 40px;
+  }
+
+  .stat:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+
+  .stat-n {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px;
+    font-weight: 300;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+
+  .stat-l {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 6px;
+    font-weight: 500;
+  }
+
+  /* ── SECTION BASE ── */
+  .section {
+    padding: 96px 56px;
+    border-top: 1px solid var(--border);
+  }
+
+  .sec-label {
+    font-size: 11px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .sec-label::before {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.6;
+  }
+
+  .sec-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4.5vw, 60px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.5px;
+    margin-bottom: 52px;
+    color: var(--white);
+  }
+
+  .sec-title em {
+    font-style: italic;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── SERVICES ── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .service-card {
+    background: var(--card);
+    padding: 44px 40px;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--grad);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .service-card:hover { background: #181818; }
+  .service-card:hover::after { transform: scaleX(1); }
+
+  .svc-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-bottom: 28px;
+  }
+
+  .svc-icon {
+    font-size: 32px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .svc-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 14px;
+    letter-spacing: -0.3px;
+  }
+
+  .svc-desc {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.75;
+    font-weight: 300;
+  }
+
+  /* ── HOURS ── */
+  .hours-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .hours-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .hours-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--card);
+    padding: 22px 32px;
+    transition: background 0.2s;
+  }
+
+  .hours-row:hover { background: #181818; }
+
+  .hours-day {
+    font-size: 14px;
+    color: var(--off);
+    font-weight: 300;
+    letter-spacing: 0.5px;
+  }
+
+  .hours-time {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--white);
+    letter-spacing: 1px;
+  }
+
+  .pulse {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 0 0 rgba(74,222,128,0.4);
+    animation: pulse 2s infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(74,222,128,0.4); }
+    70%  { box-shadow: 0 0 0 8px rgba(74,222,128,0); }
+    100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+  }
+
+  .hours-note {
+    margin-top: 24px;
+    padding: 20px 24px;
+    background: var(--gold-pale);
+    border: 1px solid rgba(201,150,42,0.2);
+    border-radius: 12px;
+    font-size: 14px;
+    color: var(--off);
+    font-weight: 300;
+  }
+
+  .hours-note a {
+    color: var(--gold-light);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .hours-cta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    justify-content: center;
+    padding: 48px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    height: 100%;
+  }
+
+  .hours-cta-block h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+    line-height: 1.1;
+  }
+
+  .hours-cta-block p {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* ── CONTACT ── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .contact-left {
+    background: var(--card);
+    padding: 52px 48px;
+  }
+
+  .contact-right {
+    background: var(--surface);
+    padding: 52px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .contact-item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 36px;
+  }
+
+  .contact-item:last-of-type { margin-bottom: 0; }
+
+  .ci-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--gold-pale);
+    border: 1px solid rgba(201,150,42,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .ci-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+
+  .ci-value {
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1.45;
+  }
+
+  .ci-value a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .ci-value a:hover { color: var(--gold-light); }
+
+  /* social pills */
+  .socials {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 40px;
+    padding-top: 36px;
+    border-top: 1px solid var(--border);
+  }
+
+  .socials-label {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .social-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--off);
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: none;
+    padding: 13px 18px;
+    border-radius: 100px;
+    border: 1px solid var(--border-light);
+    background: transparent;
+    transition: all 0.25s;
+    width: fit-content;
+  }
+
+  .social-link:hover {
+    border-color: var(--gold);
+    color: var(--gold-light);
+    background: var(--gold-pale);
+  }
+
+  .social-link svg { flex-shrink: 0; }
+
+  /* map card */
+  .map-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    height: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    text-align: center;
+    padding: 40px;
+    position: relative;
+  }
+
+  .map-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 60%, rgba(201,150,42,0.06) 0%, transparent 70%);
+  }
+
+  .map-card-pin {
+    font-size: 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .map-card-address {
+    position: relative;
+    z-index: 1;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1.4;
+    letter-spacing: 0.3px;
+  }
+
+  .map-card-address span {
+    display: block;
+    font-size: 14px;
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    margin-top: 4px;
+  }
+
+  .map-card a.btn-gold {
+    position: relative;
+    z-index: 1;
+    margin-top: 8px;
+    font-size: 11px;
+    padding: 12px 28px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 6px;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .footer-copy {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    font-weight: 300;
+  }
+
+  .footer-copy a {
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-content > * { animation: fadeUp 0.8s cubic-bezier(0.4,0,0.2,1) both; }
+  .eyebrow       { animation-delay: 0.1s; }
+  .hero-title    { animation-delay: 0.25s; }
+  .hero-sub      { animation-delay: 0.4s; }
+  .hero-actions  { animation-delay: 0.55s; }
+  .hero-stats    { animation-delay: 0.7s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .nav-links li:not(:last-child) { display: none; }
+    .hero { padding: 0 24px 64px; }
+    .hero-deco { display: none; }
+    .section { padding: 72px 24px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .hours-wrap { grid-template-columns: 1fr; gap: 32px; }
+    .contact-grid { grid-template-columns: 1fr; }
+    footer { padding: 24px; }
+    .hero-stats { gap: 0; }
+    .stat { padding-right: 24px; margin-right: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">PEPE GYM</div>
+  <ul class="nav-links">
+    <li><a href="#services">Shërbimet</a></li>
+    <li><a href="#oraret">Oraret</a></li>
+    <li><a href="#contact">Kontakti</a></li>
+    <li>
+      <a href="tel:049778182" class="nav-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+        049 778 182
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-ambient"></div>
+  <div class="hero-deco">PEPE<br>GYM</div>
+  <div class="hero-content">
+    <div class="eyebrow">Fitness Center · Suharekë</div>
+    <h1 class="hero-title">
+      Forco trupin.<br>
+      <em>Forco mendjen.</em>
+    </h1>
+    <p class="hero-sub">
+      Qendra e fitnesit në Suharekë — pajisje profesionale, ambient motivues dhe shërbime të plota. Hapur çdo ditë nga 7:00 deri 23:00.
+    </p>
+    <div class="hero-actions">
+      <a href="tel:049778182" class="btn-gold">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+        Na Telefono
+      </a>
+      <a href="#contact" class="btn-ghost">
+        Na gjej
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-n">268</div>
+        <div class="stat-l">Postime</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">3.6K</div>
+        <div class="stat-l">Ndjekës</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">16h</div>
+        <div class="stat-l">Hapur çdo ditë</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section" id="services">
+  <div class="sec-label">Çfarë ofrojmë</div>
+  <h2 class="sec-title">Shërbimet <em>tona</em></h2>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="svc-num">01</div>
+      <span class="svc-icon">🏋️</span>
+      <div class="svc-name">Fitness</div>
+      <p class="svc-desc">Salla moderne me pajisje të plota për stërvitje force, kardio dhe fitnes të përgjithshëm. Ideale për të gjitha nivelet.</p>
+    </div>
+    <div class="service-card">
+      <div class="svc-num">02</div>
+      <span class="svc-icon">🦘</span>
+      <div class="svc-name">Kangoo Jumps</div>
+      <p class="svc-desc">Stërvitje dinamike me kepucë speciale kangoo. Djeg kalori, rrit rezistencën dhe të jep energji gjatë gjithë ditës.</p>
+    </div>
+    <div class="service-card">
+      <div class="svc-num">03</div>
+      <span class="svc-icon">☀️</span>
+      <div class="svc-name">Solarium</div>
+      <p class="svc-desc">Shërbim solariumi profesional përmes @pepesolarium. Lëkurë e shëndetshme dhe ngjyrë e bukur gjatë gjithë vitit.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOURS -->
+<section class="section" id="oraret" style="background: var(--surface);">
+  <div class="sec-label">Kur jemi hapur</div>
+  <h2 class="sec-title">Orari i <em>punës</em></h2>
+  <div class="hours-wrap">
+    <div>
+      <div class="hours-list">
+        <div class="hours-row">
+          <span class="hours-day">Hënë – E Premte</span>
+          <span class="hours-time"><span class="pulse"></span> 07:00 – 23:00</span>
+        </div>
+        <div class="hours-row">
+          <span class="hours-day">E Shtunë</span>
+          <span class="hours-time"><span class="pulse"></span> 07:00 – 23:00</span>
+        </div>
+        <div class="hours-row">
+          <span class="hours-day">E Diel</span>
+          <span class="hours-time"><span class="pulse"></span> 07:00 – 23:00</span>
+        </div>
+      </div>
+      <div class="hours-note">
+        Për çmime dhe anëtarësime, kontaktoni direkt:
+        <a href="tel:049778182"> 049 778 182</a>
+      </div>
+    </div>
+    <div class="hours-cta-block">
+      <h3>Fillo <em style="font-style:italic; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">sot.</em></h3>
+      <p>Mos e shty për nesër atë që mund ta fillosh tani. Na vizito ose telefono dhe ne do të kujdesemi për pjesën tjetër.</p>
+      <a href="tel:049778182" class="btn-gold" style="align-self: flex-start;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+        049 778 182
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div class="sec-label">Na gjej</div>
+  <h2 class="sec-title">Kontakti</h2>
+  <div class="contact-grid">
+    <div class="contact-left">
+      <div class="contact-item">
+        <div class="ci-icon">📍</div>
+        <div>
+          <div class="ci-label">Adresa</div>
+          <div class="ci-value">Rruga "Nëna Terezë", Ura e Madhe<br>Suharekë 23000</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="ci-icon">📞</div>
+        <div>
+          <div class="ci-label">Telefoni</div>
+          <div class="ci-value"><a href="tel:049778182">049 778 182</a></div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="ci-icon">🕐</div>
+        <div>
+          <div class="ci-label">Orari</div>
+          <div class="ci-value">07:00 – 23:00 · Çdo ditë</div>
+        </div>
+      </div>
+
+      <div class="socials">
+        <div class="socials-label">Na ndiqni</div>
+        <div class="social-row">
+          <a href="https://www.instagram.com/pepegym_" target="_blank" class="social-link">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            @pepegym_
+          </a>
+          <a href="https://www.instagram.com/pepesolarium" target="_blank" class="social-link">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            @pepesolarium
+          </a>
+          <a href="https://www.instagram.com/pepegymkangoojumps" target="_blank" class="social-link">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            @pepegymkangoojumps
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-right">
+      <div class="map-card">
+        <div class="map-card-pin">📍</div>
+        <div class="map-card-address">
+          Rruga "Nëna Terezë", Ura e Madhe
+          <span>Suharekë 23000, Kosovë</span>
+        </div>
+        <a href="https://maps.google.com/?q=Rruga+Nëna+Terezë+Suharekë+Kosovo" target="_blank" class="btn-gold">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Hap në Google Maps
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">PEPE GYM</div>
+  <div class="footer-copy">Fitness Center "Pepe Gym" · Suharekë © 2025</div>
+  <div class="footer-copy">
+    <a href="tel:049778182">049 778 182</a>
+  </div>
+</footer>
+
+</body>
+</html>
